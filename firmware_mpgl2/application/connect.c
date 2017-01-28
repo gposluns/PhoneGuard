@@ -12,6 +12,8 @@ extern u32 G_u32AntApiCurrentDataTimeStamp;                       /* From ant_ap
 extern AntApplicationMessageType G_eAntApiCurrentMessageClass;    /* From ant_api.c */
 extern u8 G_au8AntApiCurrentData[ANT_APPLICATION_MESSAGE_BYTES];  /* From ant_api.c */
 
+u8 message[] = {0, 0, 0, 0, 0, 0, 0, 0}; 
+
 void Connect_RunActiveState(void){
   connectActiveState();
 }
@@ -30,9 +32,25 @@ void Connect_Initialize(){
   AntChannelConfig(ANT_MASTER);
   AntOpenChannel();
   
-  connectActiveState = connectScan;
+  connectActiveState = connectIdle;
 }
 
-void connectScan(){
-   
+void connectIdle(){
+  if (AntReadData()){
+       connectProcessMessage();
+   }
+}
+
+void connectProcessMessage(){
+  if (G_eAntApiCurrentMessageClass == ANT_TICK){
+    
+  }
+  else if(G_eAntApiCurrentMessageClass == ANT_DATA){
+    if (*G_au8AntApiCurrentData < 8){
+      watcherNoteResponse(G_au8AntApiCurrentData);
+    }
+    else{
+      watcherRegister(G_au8AntApiCurrentData);
+    }
+  }
 }

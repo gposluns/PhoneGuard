@@ -69,7 +69,7 @@ void main(void)
   AntInitialize();
   
   /* Application initialization */
-  UserApp1Initialize();
+  WatcherInitialize();
   UserApp2Initialize();
   UserApp3Initialize();
   
@@ -95,7 +95,11 @@ void main(void)
     AntRunActiveState();
 
     /* Applications */
-    UserApp1RunActiveState();
+    if (AntReadData()){
+      connectProcessMessage();
+      continue;
+    }
+    WatcherRunActiveState();
     UserApp2RunActiveState();
     UserApp3RunActiveState();
         

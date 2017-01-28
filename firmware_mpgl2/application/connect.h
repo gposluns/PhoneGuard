@@ -6,7 +6,8 @@ void Connect_Initialize(void);
 void Connect_RunActiveState(void);
 
 void connectIdle(void);
-void connectActive(void);
+void connectProcessMessage(void);
+void connectQueue(u8* message);
 
 #define ANT_CHANNEL_CONNECT             (u8)0                  // Channel 0 - 7
 #define ANT_SERIAL_LO_CONNECT           (u8)0x21                  // Low byte of two-byte Device #

@@ -2,11 +2,16 @@
 #define watcher
 unsigned char* Watcher_GetAlertStatus(void);
 
-void Watcher_Initialize(void);
-void Watcher_RunActiveState(void);
+void WatcherInitialize(void);
+void WatcherRunActiveState(void);
+void WatcherSM_Idle(void);
+void WatcherSM_FailedInit(void);
 
-void watcherAlone(void);
 void watcherWatch(void);
-void watcherAlert(void);
+void WatcherAlert(void);
+void watcherNoteResponse(u8* message);
+void WatcherRegister(u8* message);
+void WatcherRelease(u8*message);
 
+#define MAX_WAIT        5
 #endif
