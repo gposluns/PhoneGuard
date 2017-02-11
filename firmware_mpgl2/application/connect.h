@@ -19,4 +19,6 @@ void connectQueue(u8* message);
 #define ANT_FREQUENCY_CONNECT           (u8)50               // 2400MHz + this number 0 - 99
 #define ANT_TX_POWER_CONNECT            RADIO_TX_POWER_0DBM   // RADIO_TX_POWER_0DBM, RADIO_TX_POWER_MINUS5DBM, RADIO_TX_POWER_MINUS10DBM, RADIO_TX_POWER_MINUS20DBM
 
+#define REGISTER                        255
+#define RELEASE                         254
 #endif

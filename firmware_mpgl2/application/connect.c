@@ -1,5 +1,5 @@
-#include "connect.h"
 #include "configuration.h"
+#include "connect.h"
 
 static fnCode_type connectActiveState;
 
@@ -46,11 +46,15 @@ void connectProcessMessage(){
     
   }
   else if(G_eAntApiCurrentMessageClass == ANT_DATA){
-    if (*G_au8AntApiCurrentData < 8){
-      watcherNoteResponse(G_au8AntApiCurrentData);
-    }
-    else{
-      watcherRegister(G_au8AntApiCurrentData);
+    switch (*G_au8AntApiCurrentData){
+      case REGISTER: 
+        WatcherRegister(G_au8AntApiCurrentData);
+        break;
+      case RELEASE:
+        WatcherRelease(G_au8AntApiCurrentData);
+        break;
+      default:
+        watcherNoteResponse(G_au8AntApiCurrentData);
     }
   }
 }

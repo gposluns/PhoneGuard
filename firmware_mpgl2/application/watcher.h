@@ -1,6 +1,5 @@
 #ifndef watcher
 #define watcher
-unsigned char* Watcher_GetAlertStatus(void);
 
 void WatcherInitialize(void);
 void WatcherRunActiveState(void);
@@ -13,5 +12,7 @@ void watcherNoteResponse(u8* message);
 void WatcherRegister(u8* message);
 void WatcherRelease(u8*message);
 
-#define MAX_WAIT        5
+#define MAX_WAIT                5
+#define DEFAULT_LIST_SIZE       8
+#define MAX_NAME_LENGTH         7
 #endif

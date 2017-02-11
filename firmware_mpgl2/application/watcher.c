@@ -60,9 +60,13 @@ Variable names shall start with "UserApp_" and be declared as static.
 static fnCode_type Watcher_StateMachine;            /* The state machine function pointer */
 //static u32 Watcher_u32Timeout;                      /* Timeout counter used across states */
 
+static u8 REGISTER_ACKNOWLEDGE[] = {253, 0, 0, 0, 0, 0, 0, 253};
+static u8 RELEASE_ACKNOWLEDGE[] = {252, 0, 0, 0, 0, 0, 0, 252};
 
 u8** deviceNames;
-u32 lastResponseTimes [8];
+u8 numDevices;
+u8 listSize;
+u32* lastResponseTimes;
 u32 lastTime;
 /**********************************************************************************************************************
 Function Definitions
@@ -94,6 +98,10 @@ Promises:
 void WatcherInitialize(void)
 {
   lastTime = G_u32SystemTime1s; 
+  numDevices = 0;
+  listSize = DEFAULT_LIST_SIZE;
+  deviceNames = (u8**)malloc(listSize*sizeof(u8*));
+  lastResponseTimes = (u32*)malloc(listSize*sizeof(u32));
   /* If good initialization, set state to Idle */
   if( 1 )
   {
@@ -133,27 +141,51 @@ void WatcherRunActiveState(void)
 /* Private functions                                                                                                  */
 /*--------------------------------------------------------------------------------------------------------------------*/
 
+void WatcherRegister(u8* message){
+  int i, j;
+  numDevices++;
+  if (numDevices > listSize){
+    listSize *= 2;
+    deviceNames = realloc (deviceNames, listSize*sizeof(u8*));
+    lastResponseTimes = realloc (lastResponseTimes, listSize*sizeof(u32*));
+  }
+  for (i = 0; i < 8; i++){
+    if (deviceNames[i] == NULL){
+      deviceNames[i] = (u8*)malloc((MAX_NAME_LENGTH + 1)*sizeof(u8));
+      for (j = 0; j<MAX_NAME_LENGTH; j++){
+        deviceNames[i][j] = message[j + 1];
+      }
+      deviceNames[i][MAX_NAME_LENGTH] = '\0';
+    }
+  }
+  
+  AntQueueBroadcastMessage(REGISTER_ACKNOWLEDGE);
+}
+
+void WatcherRelease(u8* message){
+  int i;
+  for (i = 0; i < MAX_NAME_LENGTH; i++){
+    message[i] = message[i + 1];
+  }
+  message[MAX_NAME_LENGTH] = '\0';
+  for (i = 0; i < listSize;i++){
+    if (deviceNames[i] != NULL && !strcmp(message, deviceNames[i])){
+      free (deviceNames[i]);
+      deviceNames[i] = NULL;
+      numDevices--;
+    }
+  }
+  
+  AntQueueBroadcastMessage(RELEASE_ACKNOWLEDGE);
+}
 
 /**********************************************************************************************************************
 State Machine Function Definitions
 **********************************************************************************************************************/
 
 void WatcherAlert(){
-}
-
-void WatcherRegister(u8* message){
-  int i, j;
-  for (i = 0; i < 8; i++){
-    if (deviceNames[i] == NULL){
-      deviceNames[i] = (u8*)malloc(7);
-      for (j = 0; j<7; j++){
-        deviceNames[i][j] = message[j + 1];
-      }
-    }
-  }
-}
-
-void WatcherRelease(u8* message){
+  //TODO: alarm stuff
+  WatcherSM_Idle();
 }
 
 /*-------------------------------------------------------------------------------------------------------------------*/
@@ -161,7 +193,9 @@ void WatcherRelease(u8* message){
 static void WatcherSM_Idle(void)
 {
     int i;
-    for (i = 0; i < 8; i++){
+    for (i = 0; i < listSize; i++){
+      if (deviceNames[i] == NULL)
+        continue;
       lastResponseTimes[i]+= G_u32SystemTime1s - lastTime;
       if (lastResponseTimes[i] > MAX_WAIT){
         Watcher_StateMachine = WatcherAlert;
