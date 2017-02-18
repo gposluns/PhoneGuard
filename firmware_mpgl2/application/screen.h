@@ -6,4 +6,6 @@ void Screen_RunActiveState(void);
 
 void screenIdle(void);
 void screenAlert(void);
+
+void ScreenUpdateAlert(u8** info, int n);
 #endif

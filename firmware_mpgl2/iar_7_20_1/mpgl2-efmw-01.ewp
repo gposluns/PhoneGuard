@@ -2065,6 +2065,9 @@
     <group>
       <name>Include</name>
       <file>
+        <name>$EW_DIR$\project\firmware_mpg_common\application\alarm.h</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\application\connect.h</name>
       </file>
       <file>
@@ -2094,6 +2097,9 @@
     </group>
     <group>
       <name>Source</name>
+      <file>
+        <name>$PROJ_DIR$\..\application\alarm.c</name>
+      </file>
       <file>
         <name>$PROJ_DIR$\..\application\connect.c</name>
       </file>

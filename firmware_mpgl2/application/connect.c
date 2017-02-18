@@ -43,7 +43,7 @@ void connectIdle(){
 
 void connectProcessMessage(){
   if (G_eAntApiCurrentMessageClass == ANT_TICK){
-    
+    //0s are fine, its response i care about
   }
   else if(G_eAntApiCurrentMessageClass == ANT_DATA){
     switch (*G_au8AntApiCurrentData){

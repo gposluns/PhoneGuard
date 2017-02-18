@@ -92,6 +92,7 @@ Includes
 #include "connect.h"
 #include "screen.h"
 #include "watcher.h"
+#include "alarm.h"
 
 
 /**********************************************************************************************************************

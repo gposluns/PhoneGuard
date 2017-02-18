@@ -70,6 +70,7 @@ void main(void)
   
   /* Application initialization */
   WatcherInitialize();
+  AlarmInitialize();
   UserApp2Initialize();
   UserApp3Initialize();
   
@@ -100,6 +101,7 @@ void main(void)
       continue;
     }
     WatcherRunActiveState();
+    AlarmRunActiveState();
     UserApp2RunActiveState();
     UserApp3RunActiveState();
         

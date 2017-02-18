@@ -1,14 +1,14 @@
 /**********************************************************************************************************************
-File: watcher.c                                                                
+File: alarm.c                                                                
 
 ----------------------------------------------------------------------------------------------------------------------
-To start a new task using this watcher as a template:
- 1. Copy both watcher.c and watcher.h to the Application directory
+To start a new task using this alarm as a template:
+ 1. Copy both alarm.c and alarm.h to the Application directory
  2. Rename the files yournewtaskname.c and yournewtaskname.h
  3. Add yournewtaskname.c and yournewtaskname.h to the Application Include and Source groups in the IAR project
- 4. Use ctrl-h (make sure "Match Case" is checked) to find and replace all instances of "watcher" with "yournewtaskname"
- 5. Use ctrl-h to find and replace all instances of "Watcher" with "YourNewTaskName"
- 6. Use ctrl-h to find and replace all instances of "WATCHER" with "YOUR_NEW_TASK_NAME"
+ 4. Use ctrl-h (make sure "Match Case" is checked) to find and replace all instances of "alarm" with "yournewtaskname"
+ 5. Use ctrl-h to find and replace all instances of "Alarm" with "YourNewTaskName"
+ 6. Use ctrl-h to find and replace all instances of "ALARM" with "YOUR_NEW_TASK_NAME"
  7. Add a call to YourNewTaskNameInitialize() in the init section of main
  8. Add a call to YourNewTaskNameRunActiveState() in the Super Loop section of main
  9. Update yournewtaskname.h per the instructions at the top of yournewtaskname.h
@@ -16,7 +16,7 @@ To start a new task using this watcher as a template:
 ----------------------------------------------------------------------------------------------------------------------
 
 Description:
-This is a watcher.c file template 
+This is a alarm.c file template 
 
 ------------------------------------------------------------------------------------------------------------------------
 API:
@@ -25,10 +25,10 @@ Public functions:
 
 
 Protected System functions:
-void WatcherInitialize(void)
+void AlarmInitialize(void)
 Runs required initialzation for the task.  Should only be called once in main init section.
 
-void WatcherRunActiveState(void)
+void AlarmRunActiveState(void)
 Runs current task state.  Should only be called once in main loop.
 
 
@@ -41,9 +41,9 @@ Global variable definitions with scope across entire project.
 All Global variable names shall start with "G_"
 ***********************************************************************************************************************/
 /* New variables */
-volatile u32 G_u32WatcherFlags;                       /* Global state flags */
-
-
+volatile u32 G_u32AlarmFlags;                       /* Global state flags */
+u8 toggle = 0;
+u32 counter = 0;
 /*--------------------------------------------------------------------------------------------------------------------*/
 /* Existing variables (defined in other files -- should all contain the "extern" keyword) */
 extern volatile u32 G_u32SystemFlags;                  /* From main.c */
@@ -57,17 +57,10 @@ extern volatile u32 G_u32SystemTime1s;                 /* From board-specific so
 Global variable definitions with scope limited to this local application.
 Variable names shall start with "UserApp_" and be declared as static.
 ***********************************************************************************************************************/
-static fnCode_type Watcher_StateMachine;            /* The state machine function pointer */
-//static u32 Watcher_u32Timeout;                      /* Timeout counter used across states */
+static fnCode_type Alarm_StateMachine;            /* The state machine function pointer */
+//static u32 Alarm_u32Timeout;                      /* Timeout counter used across states */
 
-static u8 REGISTER_ACKNOWLEDGE[] = {253, 0, 0, 0, 0, 0, 0, 253};
-static u8 RELEASE_ACKNOWLEDGE[] = {252, 0, 0, 0, 0, 0, 0, 252};
 
-u8** deviceNames;
-u8 numDevices;
-u8 listSize;
-u32* lastResponseTimes;
-u32 lastTime;
 /**********************************************************************************************************************
 Function Definitions
 **********************************************************************************************************************/
@@ -75,16 +68,14 @@ Function Definitions
 /*--------------------------------------------------------------------------------------------------------------------*/
 /* Public functions                                                                                                   */
 /*--------------------------------------------------------------------------------------------------------------------*/
-void watcherNoteResponse(u8* message){
-  lastResponseTimes[*message] = 0;
-}
+
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 /* Protected functions                                                                                                */
 /*--------------------------------------------------------------------------------------------------------------------*/
 
 /*--------------------------------------------------------------------------------------------------------------------
-Function: WatcherInitialize
+Function: AlarmInitialize
 
 Description:
 Initializes the State Machine and its variables.
@@ -95,29 +86,24 @@ Requires:
 Promises:
   - 
 */
-void WatcherInitialize(void)
+void AlarmInitialize(void)
 {
-  lastTime = G_u32SystemTime1s; 
-  numDevices = 0;
-  listSize = DEFAULT_LIST_SIZE;
-  deviceNames = (u8**)malloc(listSize*sizeof(u8*));
-  lastResponseTimes = (u32*)malloc(listSize*sizeof(u32));
   /* If good initialization, set state to Idle */
   if( 1 )
   {
-    Watcher_StateMachine = WatcherSM_Idle;
+    Alarm_StateMachine = AlarmSM_Idle;
   }
   else
   {
     /* The task isn't properly initialized, so shut it down and don't run */
-    Watcher_StateMachine = WatcherSM_FailedInit;
+    Alarm_StateMachine = AlarmSM_FailedInit;
   }
 
-} /* end WatcherInitialize() */
+} /* end AlarmInitialize() */
 
   
 /*----------------------------------------------------------------------------------------------------------------------
-Function WatcherRunActiveState()
+Function AlarmRunActiveState()
 
 Description:
 Selects and runs one iteration of the current state in the state machine.
@@ -130,109 +116,94 @@ Requires:
 Promises:
   - Calls the function to pointed by the state machine function pointer
 */
-void WatcherRunActiveState(void)
+void AlarmRunActiveState(void)
 {
-  Watcher_StateMachine();
+  Alarm_StateMachine();
 
-} /* end WatcherRunActiveState */
+} /* end AlarmRunActiveState */
 
 
 /*--------------------------------------------------------------------------------------------------------------------*/
 /* Private functions                                                                                                  */
 /*--------------------------------------------------------------------------------------------------------------------*/
 
-void WatcherRegister(u8* message){
-  int i, j;
-  numDevices++;
-  if (numDevices > listSize){
-    listSize *= 2;
-    deviceNames = realloc (deviceNames, listSize*sizeof(u8*));
-    lastResponseTimes = realloc (lastResponseTimes, listSize*sizeof(u32*));
-  }
-  for (i = 0; i < 8; i++){
-    if (deviceNames[i] == NULL){
-      deviceNames[i] = (u8*)malloc((MAX_NAME_LENGTH + 1)*sizeof(u8));
-      for (j = 0; j<MAX_NAME_LENGTH; j++){
-        deviceNames[i][j] = message[j + 1];
-      }
-      deviceNames[i][MAX_NAME_LENGTH] = '\0';
-    }
-  }
-  
-  AntQueueBroadcastMessage(REGISTER_ACKNOWLEDGE);
-}
-
-void WatcherRelease(u8* message){
-  int i;
-  for (i = 0; i < MAX_NAME_LENGTH; i++){
-    message[i] = message[i + 1];
-  }
-  message[MAX_NAME_LENGTH] = '\0';
-  for (i = 0; i < listSize;i++){
-    if (deviceNames[i] != NULL && !strcmp(message, deviceNames[i])){
-      free (deviceNames[i]);
-      deviceNames[i] = NULL;
-      numDevices--;
-    }
-  }
-  
-  AntQueueBroadcastMessage(RELEASE_ACKNOWLEDGE);
-}
 
 /**********************************************************************************************************************
 State Machine Function Definitions
 **********************************************************************************************************************/
 
-void WatcherAlert(){
-  u8 i, n = 0;
-  u8** missing = (u8**)malloc(sizeof(u8*)*listSize);
-  for (i = 0; i < listSize && n < numDevices; i++){
-    if (lastResponseTimes[i] > MAX_WAIT){
-      missing[n++] = deviceNames[i];
-    }
-  }
-  if (n == 0){
-    Watcher_StateMachine = WatcherIdle();
-    silenceAlarm();
-  }
-  ScreenUpdateAlert (missing, n);
-  activateAlarm();
-  WatcherSM_Idle();
-}
-
 /*-------------------------------------------------------------------------------------------------------------------*/
 /* Wait for a message to be queued */
-static void WatcherSM_Idle(void)
+static void AlarmSM_Idle(void)
 {
-    int i;
-    for (i = 0; i < listSize; i++){
-      if (deviceNames[i] == NULL)
-        continue;
-      lastResponseTimes[i]+= G_u32SystemTime1s - lastTime;
-      if (lastResponseTimes[i] > MAX_WAIT){
-        Watcher_StateMachine = WatcherAlert;
-      }
-    }
-    lastTime = G_u32SystemTime1s;
     
-} /* end WatcherSM_Idle() */
+} /* end AlarmSM_Idle() */
      
+
+static void AlarmSM_Active(void){
+  //TODO:Annoying alarm sounds/lights
+  if (!toggle){
+    LedPWM(GREEN0, LED_PWM_50);
+    LedOff(GREEN1);
+    LedPWM(GREEN2, LED_PWM_50);
+    LedOff(GREEN3);
+    PWMAudioSetFrequency(BUZZER1, 15000);
+  }
+  else{
+    LedOff (GREEN0);
+    LedPWM (GREEN1, LED_PWM_50);
+    LedOff (GREEN2);
+    LedPWM (GREEN3, LED_PWM_50);
+    PWMAudioSetFrequency(BUZZER1, 5000);
+  }
+  if (counter > CYCLE_PERIOD){
+    toggle = toggle==0?1:0;
+    counter = 0;
+  }
+}
+
+void activateAlarm(void){
+  Alarm_StateMachine = AlarmSM_Active;
+  LedOn (RED0);
+  LedOn (RED1);
+  LedOn (RED2);
+  LedOn (RED3);
+  LedPWM (GREEN1, LED_PWM_50);
+  LedPWM (GREEN3, LED_PWM_50);
+  PWMAudioOn(BUZZER1);
+}
+
+void silenceAlarm(void){
+  Alarm_StateMachine = AlarmSM_Idle;
+  toggle = 0;
+  counter = 0;
+  LedOff (RED0);
+  LedOff (RED1);
+  LedOff (RED2);
+  LedOff (RED3);
+  LedOff (GREEN0);
+  LedOff (GREEN1);
+  LedOff (GREEN2);
+  LedOff (GREEN3);
+  PWMAudioOff(BUZZER1);
+  //TODO: Turn off lights/sound
+}
 #if 0
 /*-------------------------------------------------------------------------------------------------------------------*/
 /* Handle an error */
-static void WatcherSM_Error(void)          
+static void AlarmSM_Error(void)          
 {
   
-} /* end WatcherSM_Error() */
+} /* end AlarmSM_Error() */
 #endif
 
 
 /*-------------------------------------------------------------------------------------------------------------------*/
 /* State to sit in if init failed */
-static void WatcherSM_FailedInit(void)          
+static void AlarmSM_FailedInit(void)          
 {
     
-} /* end WatcherSM_FailedInit() */
+} /* end AlarmSM_FailedInit() */
 
 
 /*--------------------------------------------------------------------------------------------------------------------*/
