@@ -1,6 +1,6 @@
 #ifndef connect
 #define connect
-unsigned char* recieved;
+//unsigned char* recieved;
 
 void Connect_Initialize(void);
 void Connect_RunActiveState(void);

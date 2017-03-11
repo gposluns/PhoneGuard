@@ -65,7 +65,7 @@ static u8 RELEASE_ACKNOWLEDGE[] = {252, 0, 0, 0, 0, 0, 0, 252};
 
 u8** deviceNames;
 u8 numDevices;
-u8 listSize;
+u8 watcher_listSize;
 u32* lastResponseTimes;
 u32 lastTime;
 /**********************************************************************************************************************
@@ -99,9 +99,9 @@ void WatcherInitialize(void)
 {
   lastTime = G_u32SystemTime1s; 
   numDevices = 0;
-  listSize = DEFAULT_LIST_SIZE;
-  deviceNames = (u8**)malloc(listSize*sizeof(u8*));
-  lastResponseTimes = (u32*)malloc(listSize*sizeof(u32));
+  watcher_listSize = DEFAULT_LIST_SIZE;
+  deviceNames = (u8**)malloc(watcher_listSize*sizeof(u8*));
+  lastResponseTimes = (u32*)malloc(watcher_listSize*sizeof(u32));
   /* If good initialization, set state to Idle */
   if( 1 )
   {
@@ -144,10 +144,10 @@ void WatcherRunActiveState(void)
 void WatcherRegister(u8* message){
   int i, j;
   numDevices++;
-  if (numDevices > listSize){
-    listSize *= 2;
-    deviceNames = realloc (deviceNames, listSize*sizeof(u8*));
-    lastResponseTimes = realloc (lastResponseTimes, listSize*sizeof(u32*));
+  if (numDevices > watcher_listSize){
+    watcher_listSize *= 2;
+    deviceNames = realloc (deviceNames, watcher_listSize*sizeof(u8*));
+    lastResponseTimes = realloc (lastResponseTimes, watcher_listSize*sizeof(u32*));
   }
   for (i = 0; i < 8; i++){
     if (deviceNames[i] == NULL){
@@ -168,7 +168,7 @@ void WatcherRelease(u8* message){
     message[i] = message[i + 1];
   }
   message[MAX_NAME_LENGTH] = '\0';
-  for (i = 0; i < listSize;i++){
+  for (i = 0; i < watcher_listSize;i++){
     if (deviceNames[i] != NULL && !strcmp(message, deviceNames[i])){
       free (deviceNames[i]);
       deviceNames[i] = NULL;
@@ -185,18 +185,20 @@ State Machine Function Definitions
 
 void WatcherAlert(){
   u8 i, n = 0;
-  u8** missing = (u8**)malloc(sizeof(u8*)*listSize);
-  for (i = 0; i < listSize && n < numDevices; i++){
+  u8** missing = (u8**)malloc(sizeof(u8*)*watcher_listSize);
+  for (i = 0; i < watcher_listSize && n < numDevices; i++){
     if (lastResponseTimes[i] > MAX_WAIT){
       missing[n++] = deviceNames[i];
+      activateAlarm();
     }
   }
   if (n == 0){
-    Watcher_StateMachine = WatcherIdle();
+    Watcher_StateMachine = WatcherSM_Idle;
+#ifndef DEBUGALARM
     silenceAlarm();
+#endif
   }
   ScreenUpdateAlert (missing, n);
-  activateAlarm();
   WatcherSM_Idle();
 }
 
@@ -205,7 +207,7 @@ void WatcherAlert(){
 static void WatcherSM_Idle(void)
 {
     int i;
-    for (i = 0; i < listSize; i++){
+    for (i = 0; i < watcher_listSize; i++){
       if (deviceNames[i] == NULL)
         continue;
       lastResponseTimes[i]+= G_u32SystemTime1s - lastTime;

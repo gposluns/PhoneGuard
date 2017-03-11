@@ -1,5 +1,4 @@
 #include "configuration.h"
-#include "connect.h"
 
 static fnCode_type connectActiveState;
 

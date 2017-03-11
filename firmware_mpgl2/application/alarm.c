@@ -92,6 +92,9 @@ void AlarmInitialize(void)
   if( 1 )
   {
     Alarm_StateMachine = AlarmSM_Idle;
+#ifdef DEBUGALARM
+    activateAlarm();
+#endif
   }
   else
   {
@@ -143,26 +146,29 @@ static void AlarmSM_Idle(void)
 static void AlarmSM_Active(void){
   //TODO:Annoying alarm sounds/lights
   if (!toggle){
-    LedPWM(GREEN0, LED_PWM_50);
+    LedOn (GREEN0);
     LedOff(GREEN1);
-    LedPWM(GREEN2, LED_PWM_50);
+    LedOn (GREEN2);
     LedOff(GREEN3);
-    PWMAudioSetFrequency(BUZZER1, 15000);
+    PWMAudioSetFrequency(BUZZER1, 10000);
   }
   else{
     LedOff (GREEN0);
-    LedPWM (GREEN1, LED_PWM_50);
+    LedOn  (GREEN1);
     LedOff (GREEN2);
-    LedPWM (GREEN3, LED_PWM_50);
+    LedOn  (GREEN3);
     PWMAudioSetFrequency(BUZZER1, 5000);
   }
+  counter++;
   if (counter > CYCLE_PERIOD){
-    toggle = toggle==0?1:0;
+    toggle = !toggle;
     counter = 0;
   }
 }
 
 void activateAlarm(void){
+  if (Alarm_StateMachine == AlarmSM_Active)
+    return;
   Alarm_StateMachine = AlarmSM_Active;
   LedOn (RED0);
   LedOn (RED1);
