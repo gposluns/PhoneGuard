@@ -121,7 +121,7 @@
       <WATCH_4>
         <expressions>
           
-        <item></item></expressions>
+        <item/></expressions>
         <col-names>
           
           
@@ -220,7 +220,7 @@
       
       
       
-    <Wnd4>
+    <Wnd0>
         <Tabs>
           <Tab>
             <Identity>TabID-26658-14125</Identity>
@@ -241,7 +241,7 @@
           </Tab>
         </Tabs>
         
-      <SelectedTab>0</SelectedTab></Wnd4><Wnd5>
+      <SelectedTab>0</SelectedTab></Wnd0><Wnd1>
         <Tabs>
           <Tab>
             <Identity>TabID-4639-14128</Identity>
@@ -253,7 +253,7 @@
           </Tab>
         </Tabs>
         
-      <SelectedTab>0</SelectedTab></Wnd5><Wnd7>
+      <SelectedTab>0</SelectedTab></Wnd1><Wnd2>
         <Tabs>
           <Tab>
             <Identity>TabID-15387-14131</Identity>
@@ -286,7 +286,7 @@
           </Tab>
         </Tabs>
         
-      <SelectedTab>0</SelectedTab></Wnd7><Wnd8>
+      <SelectedTab>0</SelectedTab></Wnd2><Wnd3>
         <Tabs>
           <Tab>
             <Identity>TabID-10159-14229</Identity>
@@ -321,7 +321,7 @@
           </Tab>
         </Tabs>
         
-      <SelectedTab>1</SelectedTab></Wnd8><Wnd9>
+      <SelectedTab>1</SelectedTab></Wnd3><Wnd6>
         <Tabs>
           <Tab>
             <Identity>TabID-9637-14239</Identity>
@@ -362,21 +362,21 @@
           </Tab>
         </Tabs>
         
-      <SelectedTab>3</SelectedTab></Wnd9></Windows>
+      <SelectedTab>3</SelectedTab></Wnd6></Windows>
     <Editor>
       
       
       
       
       
-    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\application\connect.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>0</YPos2><SelStart2>26</SelStart2><SelEnd2>26</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\application\main.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>26</YPos2><SelStart2>2610</SelStart2><SelEnd2>2610</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\application\watcher.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>185</YPos2><SelStart2>8508</SelStart2><SelEnd2>8508</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\application\screen.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>34</YPos2><SelStart2>1320</SelStart2><SelEnd2>1320</SelEnd2></Tab><ActiveTab>3</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\application\alarm.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>155</YPos2><SelStart2>7026</SelStart2><SelEnd2>7026</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\drivers\lcd_NHD-C12864LZ.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>191</YPos2><SelStart2>10053</SelStart2><SelEnd2>10053</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\drivers\lcd_bitmaps.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>0</YPos2><SelStart2>0</SelStart2><SelEnd2>0</SelEnd2></Tab></Pane><ActivePane>0</ActivePane><Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\application\watcher.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>0</YPos2><SelStart2>0</SelStart2><SelEnd2>0</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\application\screen.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>0</YPos2><SelStart2>180</SelStart2><SelEnd2>180</SelEnd2></Tab><ActiveTab>1</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\firmware_mpg_common\application\alarm.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>0</YPos2><SelStart2>1874</SelStart2><SelEnd2>1874</SelEnd2></Tab></Pane><Sizes><Pane><X>500000</X><Y>500000</Y></Pane><Pane><X>500000</X><Y>500000</Y></Pane></Sizes><SplitMode>4</SplitMode></Editor>
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\application\connect.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>14</YPos2><SelStart2>1484</SelStart2><SelEnd2>1484</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\application\main.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>26</YPos2><SelStart2>2610</SelStart2><SelEnd2>2610</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\application\watcher.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>185</YPos2><SelStart2>8508</SelStart2><SelEnd2>8508</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\application\screen.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>8</YPos2><SelStart2>401</SelStart2><SelEnd2>401</SelEnd2></Tab><ActiveTab>3</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\application\alarm.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>155</YPos2><SelStart2>7026</SelStart2><SelEnd2>7026</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\drivers\lcd_NHD-C12864LZ.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>191</YPos2><SelStart2>10053</SelStart2><SelEnd2>10053</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\drivers\lcd_bitmaps.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>0</YPos2><SelStart2>0</SelStart2><SelEnd2>0</SelEnd2></Tab></Pane><ActivePane>0</ActivePane><Pane><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\application\watcher.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>0</YPos2><SelStart2>0</SelStart2><SelEnd2>0</SelEnd2></Tab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\application\screen.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>0</YPos2><SelStart2>204</SelStart2><SelEnd2>204</SelEnd2></Tab><ActiveTab>1</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>$WS_DIR$\..\..\firmware_mpg_common\application\alarm.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd><XPos2>0</XPos2><YPos2>0</YPos2><SelStart2>1874</SelStart2><SelEnd2>1874</SelEnd2></Tab></Pane><Sizes><Pane><X>500000</X><Y>500000</Y></Pane><Pane><X>500000</X><Y>500000</Y></Pane></Sizes><SplitMode>4</SplitMode></Editor>
     <Positions>
       
       
       
       
       
-    <Top><Row0><Sizes><Toolbar-03A27558><key>iaridepm.enu1</key></Toolbar-03A27558><Toolbar-214F2AD8><key>debuggergui.enu1</key></Toolbar-214F2AD8></Sizes></Row0></Top><Left><Row0><Sizes><Wnd5><Rect><Top>-2</Top><Left>-2</Left><Bottom>620</Bottom><Right>171</Right><x>-2</x><y>-2</y><xscreen>160</xscreen><yscreen>158</yscreen><sizeHorzCX>104167</sizeHorzCX><sizeHorzCY>192448</sizeHorzCY><sizeVertCX>112630</sizeVertCX><sizeVertCY>757613</sizeVertCY></Rect></Wnd5></Sizes></Row0></Left><Right><Row0><Sizes><Wnd8><Rect><Top>-2</Top><Left>-2</Left><Bottom>273</Bottom><Right>270</Right><x>-2</x><y>-2</y><xscreen>160</xscreen><yscreen>158</yscreen><sizeHorzCX>104167</sizeHorzCX><sizeHorzCY>192448</sizeHorzCY><sizeVertCX>177083</sizeVertCX><sizeVertCY>334957</sizeVertCY></Rect></Wnd8><Wnd9><Rect><Top>0</Top><Left>0</Left><Bottom>0</Bottom><Right>7</Right><x>-2</x><y>271</y><xscreen>160</xscreen><yscreen>158</yscreen><sizeHorzCX>104167</sizeHorzCX><sizeHorzCY>192448</sizeHorzCY><sizeVertCX>177083</sizeVertCX><sizeVertCY>425091</sizeVertCY></Rect></Wnd9></Sizes></Row0></Right><Bottom><Row0><Sizes><Wnd4><Rect><Top>-2</Top><Left>-2</Left><Bottom>156</Bottom><Right>810</Right><x>-2</x><y>-2</y><xscreen>812</xscreen><yscreen>158</yscreen><sizeHorzCX>528646</sizeHorzCX><sizeHorzCY>192448</sizeHorzCY><sizeVertCX>104167</sizeVertCX><sizeVertCY>192448</sizeVertCY></Rect></Wnd4><Wnd7><Rect><Top>0</Top><Left>0</Left><Bottom>513</Bottom><Right>0</Right><x>808</x><y>-2</y><xscreen>730</xscreen><yscreen>158</yscreen><sizeHorzCX>475260</sizeHorzCX><sizeHorzCY>192448</sizeHorzCY><sizeVertCX>104167</sizeVertCX><sizeVertCY>196102</sizeVertCY></Rect></Wnd7></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+    <Top><Row0><Sizes><Toolbar-029B7558><key>iaridepm.enu1</key></Toolbar-029B7558><Toolbar-1E020310><key>debuggergui.enu1</key></Toolbar-1E020310></Sizes></Row0></Top><Left><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>620</Bottom><Right>171</Right><x>-2</x><y>-2</y><xscreen>160</xscreen><yscreen>158</yscreen><sizeHorzCX>104167</sizeHorzCX><sizeHorzCY>192448</sizeHorzCY><sizeVertCX>112630</sizeVertCX><sizeVertCY>757613</sizeVertCY></Rect></Wnd1></Sizes></Row0></Left><Right><Row0><Sizes><Wnd3><Rect><Top>-2</Top><Left>-2</Left><Bottom>273</Bottom><Right>270</Right><x>-2</x><y>-2</y><xscreen>160</xscreen><yscreen>158</yscreen><sizeHorzCX>104167</sizeHorzCX><sizeHorzCY>192448</sizeHorzCY><sizeVertCX>177083</sizeVertCX><sizeVertCY>334957</sizeVertCY></Rect></Wnd3><Wnd6><Rect><Top>0</Top><Left>0</Left><Bottom>0</Bottom><Right>7</Right><x>-2</x><y>271</y><xscreen>160</xscreen><yscreen>158</yscreen><sizeHorzCX>104167</sizeHorzCX><sizeHorzCY>192448</sizeHorzCY><sizeVertCX>177083</sizeVertCX><sizeVertCY>425091</sizeVertCY></Rect></Wnd6></Sizes></Row0></Right><Bottom><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>156</Bottom><Right>810</Right><x>-2</x><y>-2</y><xscreen>812</xscreen><yscreen>158</yscreen><sizeHorzCX>528646</sizeHorzCX><sizeHorzCY>192448</sizeHorzCY><sizeVertCX>104167</sizeVertCX><sizeVertCY>192448</sizeVertCY></Rect></Wnd0><Wnd2><Rect><Top>0</Top><Left>0</Left><Bottom>0</Bottom><Right>7</Right><x>808</x><y>-2</y><xscreen>730</xscreen><yscreen>158</yscreen><sizeHorzCX>475260</sizeHorzCX><sizeHorzCY>192448</sizeHorzCY><sizeVertCX>104167</sizeVertCX><sizeVertCY>196102</sizeVertCY></Rect></Wnd2></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
   </Desktop>
 </Project>
 

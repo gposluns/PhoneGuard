@@ -144,23 +144,22 @@ static void AlarmSM_Idle(void)
      
 
 static void AlarmSM_Active(void){
-  //TODO:Annoying alarm sounds/lights
-  if (!toggle){
-    LedOn (GREEN0);
-    LedOff(GREEN1);
-    LedOn (GREEN2);
-    LedOff(GREEN3);
-    PWMAudioSetFrequency(BUZZER1, 10000);
-  }
-  else{
-    LedOff (GREEN0);
-    LedOn  (GREEN1);
-    LedOff (GREEN2);
-    LedOn  (GREEN3);
-    PWMAudioSetFrequency(BUZZER1, 5000);
-  }
   counter++;
   if (counter > CYCLE_PERIOD){
+    if (!toggle){
+      LedOn (GREEN0);
+      LedOff(GREEN1);
+      LedOn (GREEN2);
+      LedOff(GREEN3);
+      PWMAudioSetFrequency(BUZZER1, ALARM_FREQ_1);
+    }
+    else{
+      LedOff (GREEN0);
+      LedOn  (GREEN1);
+      LedOff (GREEN2);
+      LedOn  (GREEN3);
+      PWMAudioSetFrequency(BUZZER1, ALARM_FREQ_2);
+    }
     toggle = !toggle;
     counter = 0;
   }
@@ -174,9 +173,21 @@ void activateAlarm(void){
   LedOn (RED1);
   LedOn (RED2);
   LedOn (RED3);
-  LedPWM (GREEN1, LED_PWM_50);
-  LedPWM (GREEN3, LED_PWM_50);
   PWMAudioOn(BUZZER1);
+  if (!toggle){
+      LedOn (GREEN0);
+      LedOff(GREEN1);
+      LedOn (GREEN2);
+      LedOff(GREEN3);
+      PWMAudioSetFrequency(BUZZER1, ALARM_FREQ_1);
+    }
+    else{
+      LedOff (GREEN0);
+      LedOn  (GREEN1);
+      LedOff (GREEN2);
+      LedOn  (GREEN3);
+    PWMAudioSetFrequency(BUZZER1, ALARM_FREQ_2);
+  }
 }
 
 void silenceAlarm(void){
@@ -192,7 +203,6 @@ void silenceAlarm(void){
   LedOff (GREEN2);
   LedOff (GREEN3);
   PWMAudioOff(BUZZER1);
-  //TODO: Turn off lights/sound
 }
 #if 0
 /*-------------------------------------------------------------------------------------------------------------------*/

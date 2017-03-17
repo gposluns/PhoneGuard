@@ -64,6 +64,7 @@ void ScreenUpdateAlert (char** info, int n){
   for (i = 0; i < n;i++){
     LcdLoadString(info[i], LCD_FONT_SMALL, &loc);
     loc.u16PixelRowAddress += 10;
+    missingNames[i] = (char*)malloc(sizeof(char)*(1 + strlen(info[i])));
     strcpy(missingNames[i], info[i]);
   }
 }

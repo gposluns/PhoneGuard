@@ -60,8 +60,10 @@ Variable names shall start with "UserApp_" and be declared as static.
 static fnCode_type Watcher_StateMachine;            /* The state machine function pointer */
 //static u32 Watcher_u32Timeout;                      /* Timeout counter used across states */
 
-static u8 REGISTER_ACKNOWLEDGE[] = {253, 0, 0, 0, 0, 0, 0, 253};
-static u8 RELEASE_ACKNOWLEDGE[] = {252, 0, 0, 0, 0, 0, 0, 252};
+static u8 REGISTER_ACKNOWLEDGE[] = {253, 0, 0, 0, 0, 0, 0, 0};
+static u8 RELEASE_ACKNOWLEDGE[] = {252, 0, 0, 0, 0, 0, 0, 0};
+static u8 REGISTER_FAIL_NAME_CONFLICT[] = {251, 0, 0, 0, 0, 0, 0, 0};
+static u8 RELEASE_FAIL_NAME_NOT_FOUND[] = {250, 0, 0, 0, 0, 0, 0, 0};
 
 u8** deviceNames;
 u8 numDevices;
@@ -76,7 +78,14 @@ Function Definitions
 /* Public functions                                                                                                   */
 /*--------------------------------------------------------------------------------------------------------------------*/
 void watcherNoteResponse(u8* message){
-  lastResponseTimes[*message] = 0;
+  int i;
+  for (i = 0; i < watcher_listSize; i++){
+    if (deviceNames[i] != NULL && !strcmp(message + 1, deviceNames[i]){
+      lastResponseTimes[i] = 0;
+      WatcherSM_Idle();  //I am incredibly lazy
+      return;
+    }
+  }
 }
 
 /*--------------------------------------------------------------------------------------------------------------------*/
@@ -154,11 +163,11 @@ void WatcherRegister(u8* message){
       deviceNames[i] = (u8*)malloc((MAX_NAME_LENGTH + 1)*sizeof(u8));
       for (j = 0; j<MAX_NAME_LENGTH; j++){
         deviceNames[i][j] = message[j + 1];
+        REGISTER_ACKNOWLEDGE[j + 1] = message[j + 1];
       }
       deviceNames[i][MAX_NAME_LENGTH] = '\0';
     }
   }
-  
   AntQueueBroadcastMessage(REGISTER_ACKNOWLEDGE);
 }
 
@@ -173,10 +182,27 @@ void WatcherRelease(u8* message){
       free (deviceNames[i]);
       deviceNames[i] = NULL;
       numDevices--;
+      RELEASE_ACKNOWLEDGE [1] = message[1];
+      RELEASE_ACKNOWLEDGE [2] = message[2];
+      RELEASE_ACKNOWLEDGE [3] = message[3];
+      RELEASE_ACKNOWLEDGE [4] = message[4];
+      RELEASE_ACKNOWLEDGE [5] = message[5];
+      RELEASE_ACKNOWLEDGE [6] = message[6];
+      RELEASE_ACKNOWLEDGE [7] = message[7];
+      AntQueueBroadcastMessage(RELEASE_ACKNOWLEDGE);
+      break;
+    }
+    if (i == watcher_listSize - 1){
+      RELEASE_FAIL_NAME_NOT_FOUND [1] = message[1];
+      RELEASE_FAIL_NAME_NOT_FOUND [2] = message[2];
+      RELEASE_FAIL_NAME_NOT_FOUND [3] = message[3];
+      RELEASE_FAIL_NAME_NOT_FOUND [4] = message[4];
+      RELEASE_FAIL_NAME_NOT_FOUND [5] = message[5];
+      RELEASE_FAIL_NAME_NOT_FOUND [6] = message[6];
+      RELEASE_FAIL_NAME_NOT_FOUND [7] = message[7];
+      AntQueueBroadcastMessage(RELEASE_FAIL_NAME_NOT_FOUND);
     }
   }
-  
-  AntQueueBroadcastMessage(RELEASE_ACKNOWLEDGE);
 }
 
 /**********************************************************************************************************************

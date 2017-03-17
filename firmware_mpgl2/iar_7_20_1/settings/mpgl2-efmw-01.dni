@@ -25,7 +25,7 @@ TypeViolation=1
 UnspecRange=1
 ActionState=1
 [DebugChecksum]
-Checksum=-222506967
+Checksum=-1476374947
 [JLinkDriver]
 CStepIntDis=_ 0
 WatchCond=_ 0
@@ -87,8 +87,7 @@ Exclusions=
 [Disassemble mode]
 mode=0
 [Breakpoints2]
-Bp0=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\application\screen.c}.25.13" 0 0 1 "" 0 "" 0
-Count=1
+Count=0
 [Aliases]
 Count=0
 SuppressDialog=0
