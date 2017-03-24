@@ -71,6 +71,7 @@ void main(void)
   /* Application initialization */
   WatcherInitialize();
   AlarmInitialize();
+  ConnectInitialize();
   UserApp2Initialize();
   UserApp3Initialize();
   
@@ -96,10 +97,7 @@ void main(void)
     AntRunActiveState();
 
     /* Applications */
-    if (AntReadData()){
-      connectProcessMessage();
-      continue;
-    }
+    ConnectRunActiveState();
     WatcherRunActiveState();
     AlarmRunActiveState();
     UserApp2RunActiveState();

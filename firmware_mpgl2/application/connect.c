@@ -13,11 +13,11 @@ extern u8 G_au8AntApiCurrentData[ANT_APPLICATION_MESSAGE_BYTES];  /* From ant_ap
 
 u8 message[] = {0, 0, 0, 0, 0, 0, 0, 0}; 
 
-void Connect_RunActiveState(void){
+void ConnectRunActiveState(void){
   connectActiveState();
 }
 
-void Connect_Initialize(){
+void ConnectInitialize(){
   G_stAntSetupData.AntChannel          = ANT_CHANNEL_CONNECT;
   G_stAntSetupData.AntSerialLo         = ANT_SERIAL_LO_CONNECT;
   G_stAntSetupData.AntSerialHi         = ANT_SERIAL_HI_CONNECT;

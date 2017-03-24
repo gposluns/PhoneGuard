@@ -25,7 +25,7 @@ TypeViolation=1
 UnspecRange=1
 ActionState=1
 [DebugChecksum]
-Checksum=-1476374947
+Checksum=626065198
 [JLinkDriver]
 CStepIntDis=_ 0
 WatchCond=_ 0
@@ -69,13 +69,19 @@ Fmt16={W}3:G_u32Ssp2ApplicationFlags	4	0
 Fmt17={W}3:Lcd_u8CurrentPage	3	0
 Fmt18={W}3:Lcd_u8PagesToUpdate	3	0
 Fmt19={W}4:G_u32AntApiCurrentDataTimeStamp	3	0
+[Disassemble mode]
+mode=0
+[Breakpoints2]
+Bp0=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\application\watcher.c}.155.3" 0 0 1 "" 0 "" 0
+Bp1=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\application\connect.c}.48.5" 0 0 1 "" 0 "" 0
+Count=2
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
 Category=_ 0
-[TermIOLog]
-LoggingEnabled=_ 0
-LogFile=_ ""
+[Aliases]
+Count=0
+SuppressDialog=0
 [CallStackLog]
 Enabled=0
 [DriverProfiling]
@@ -84,10 +90,6 @@ Mode=0
 Graph=0
 Symbiont=0
 Exclusions=
-[Disassemble mode]
-mode=0
-[Breakpoints2]
-Count=0
-[Aliases]
-Count=0
-SuppressDialog=0
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""

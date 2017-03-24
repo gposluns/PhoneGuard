@@ -80,7 +80,7 @@ Function Definitions
 void watcherNoteResponse(u8* message){
   int i;
   for (i = 0; i < watcher_listSize; i++){
-    if (deviceNames[i] != NULL && !strcmp(message + 1, deviceNames[i]){
+    if (deviceNames[i] != NULL && !strcmp(message + 1, deviceNames[i])){
       lastResponseTimes[i] = 0;
       WatcherSM_Idle();  //I am incredibly lazy
       return;
