@@ -65,10 +65,10 @@ static u8 RELEASE_ACKNOWLEDGE[] = {252, 0, 0, 0, 0, 0, 0, 0};
 static u8 REGISTER_FAIL_NAME_CONFLICT[] = {251, 0, 0, 0, 0, 0, 0, 0};
 static u8 RELEASE_FAIL_NAME_NOT_FOUND[] = {250, 0, 0, 0, 0, 0, 0, 0};
 
-u8** deviceNames;
+u8 deviceNames[8][8];
 u8 numDevices;
-u8 watcher_listSize;
-u32* lastResponseTimes;
+u8 watcher_listSize = 8;
+u32 lastResponseTimes[8];
 u32 lastTime;
 /**********************************************************************************************************************
 Function Definitions
@@ -108,9 +108,7 @@ void WatcherInitialize(void)
 {
   lastTime = G_u32SystemTime1s; 
   numDevices = 0;
-  watcher_listSize = DEFAULT_LIST_SIZE;
-  deviceNames = (u8**)malloc(watcher_listSize*sizeof(u8*));
-  lastResponseTimes = (u32*)malloc(watcher_listSize*sizeof(u32));
+  watcher_listSize = DEFAULT_LIST_SIZE;;
   /* If good initialization, set state to Idle */
   if( 1 )
   {
@@ -153,14 +151,8 @@ void WatcherRunActiveState(void)
 void WatcherRegister(u8* message){
   int i, j;
   numDevices++;
-  if (numDevices > watcher_listSize){
-    watcher_listSize *= 2;
-    deviceNames = realloc (deviceNames, watcher_listSize*sizeof(u8*));
-    lastResponseTimes = realloc (lastResponseTimes, watcher_listSize*sizeof(u32*));
-  }
   for (i = 0; i < 8; i++){
-    if (deviceNames[i] == NULL){
-      deviceNames[i] = (u8*)malloc((MAX_NAME_LENGTH + 1)*sizeof(u8));
+    if (deviceNames[i][0] == '\0'){
       for (j = 0; j<MAX_NAME_LENGTH; j++){
         deviceNames[i][j] = message[j + 1];
         REGISTER_ACKNOWLEDGE[j + 1] = message[j + 1];
@@ -211,11 +203,10 @@ State Machine Function Definitions
 
 void WatcherAlert(){
   u8 i, n = 0;
-  u8** missing = (u8**)malloc(sizeof(u8*)*watcher_listSize);
+  u8* missing[8];
   for (i = 0; i < watcher_listSize && n < numDevices; i++){
     if (lastResponseTimes[i] > MAX_WAIT){
       missing[n++] = deviceNames[i];
-      activateAlarm();
     }
   }
   if (n == 0){
@@ -223,6 +214,9 @@ void WatcherAlert(){
 #ifndef DEBUGALARM
     silenceAlarm();
 #endif
+  }
+  else {
+    activateAlarm();
   }
   ScreenUpdateAlert (missing, n);
   WatcherSM_Idle();

@@ -11,7 +11,7 @@ extern u32 G_u32AntApiCurrentDataTimeStamp;                       /* From ant_ap
 extern AntApplicationMessageType G_eAntApiCurrentMessageClass;    /* From ant_api.c */
 extern u8 G_au8AntApiCurrentData[ANT_APPLICATION_MESSAGE_BYTES];  /* From ant_api.c */
 
-u8 message[] = {0, 0, 0, 0, 0, 0, 0, 0}; 
+u8 message[] = {10, 10, 10, 10, 10, 10, 10, 10};
 
 void ConnectRunActiveState(void){
   connectActiveState();
@@ -28,7 +28,9 @@ void ConnectInitialize(){
   G_stAntSetupData.AntFrequency        = ANT_FREQUENCY_CONNECT;
   G_stAntSetupData.AntTxPower          = ANT_TX_POWER_CONNECT;
   
-  AntChannelConfig(ANT_MASTER);
+  if (!AntChannelConfig(ANT_MASTER)){
+    while(1){}
+  }
   AntOpenChannel();
   
   connectActiveState = connectIdle;
