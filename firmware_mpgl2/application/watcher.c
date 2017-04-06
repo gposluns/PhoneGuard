@@ -60,10 +60,11 @@ Variable names shall start with "UserApp_" and be declared as static.
 static fnCode_type Watcher_StateMachine;            /* The state machine function pointer */
 //static u32 Watcher_u32Timeout;                      /* Timeout counter used across states */
 
-static u8 REGISTER_ACKNOWLEDGE[] = {253, 0, 0, 0, 0, 0, 0, 0};
-static u8 RELEASE_ACKNOWLEDGE[] = {252, 0, 0, 0, 0, 0, 0, 0};
-static u8 REGISTER_FAIL_NAME_CONFLICT[] = {251, 0, 0, 0, 0, 0, 0, 0};
-static u8 RELEASE_FAIL_NAME_NOT_FOUND[] = {250, 0, 0, 0, 0, 0, 0, 0};
+static u8 REGISTER_ACKNOWLEDGE[] = {253, 0, 0, 0, 0, 0, 0, 0, 0};
+static u8 RELEASE_ACKNOWLEDGE[] = {252, 0, 0, 0, 0, 0, 0, 0, 0};
+static u8 REGISTER_FAIL_NAME_CONFLICT[] = {251, 0, 0, 0, 0, 0, 0, 0, 0};
+static u8 RELEASE_FAIL_NAME_NOT_FOUND[] = {250, 0, 0, 0, 0, 0, 0, 0, 0};
+static u8 NORMAL[] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 u8 deviceNames[8][8];
 u8 numDevices;
@@ -80,7 +81,7 @@ Function Definitions
 void watcherNoteResponse(u8* message){
   int i;
   for (i = 0; i < watcher_listSize; i++){
-    if (deviceNames[i] != NULL && !strcmp(message + 1, deviceNames[i])){
+    if (!strcmp(message + 1, deviceNames[i])){
       lastResponseTimes[i] = 0;
       WatcherSM_Idle();  //I am incredibly lazy
       return;
@@ -150,6 +151,12 @@ void WatcherRunActiveState(void)
 
 void WatcherRegister(u8* message){
   int i, j;
+  for (i = 0; i < 8; i++){
+    if (!strcmp(message + 1, deviceNames[i])){
+      AntQueueBroadcastMessage (REGISTER_FAIL_NAME_CONFLICT);
+      return;
+    }
+  }
   numDevices++;
   for (i = 0; i < 8; i++){
     if (deviceNames[i][0] == '\0'){
@@ -170,9 +177,8 @@ void WatcherRelease(u8* message){
   }
   message[MAX_NAME_LENGTH] = '\0';
   for (i = 0; i < watcher_listSize;i++){
-    if (deviceNames[i] != NULL && !strcmp(message, deviceNames[i])){
-      free (deviceNames[i]);
-      deviceNames[i] = NULL;
+    if (!strcmp(message, deviceNames[i])){
+      deviceNames[i][0] = '\0';
       numDevices--;
       RELEASE_ACKNOWLEDGE [1] = message[1];
       RELEASE_ACKNOWLEDGE [2] = message[2];
@@ -227,7 +233,7 @@ void WatcherAlert(){
 static void WatcherSM_Idle(void)
 {
     int i;
-    for (i = 0; i < watcher_listSize; i++){
+    for (i = 0; i < numDevices; i++){
       if (deviceNames[i] == NULL)
         continue;
       lastResponseTimes[i]+= G_u32SystemTime1s - lastTime;

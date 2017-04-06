@@ -3,12 +3,13 @@
 
 
 static fnCode_type currentScreenState;
-char** missingNames;
+char missingNames[8][9];
 u8 screen_listSize;
 
 void Screen_Initialize (void){
    currentScreenState = screenIdle;
    screen_listSize = 0;
+   ScreenUpdateAlert (NULL, 0);
 }
 
 void Screen_RunActiveState (void){
@@ -51,12 +52,8 @@ void ScreenUpdateAlert (char** info, int n){
   if (update == 0){
     return;
   }
-  for (i = 0; i < screen_listSize; i++){
-    free(missingNames[i]);
-  }
-  free (missingNames);
   
-  missingNames = (char**)malloc(n*sizeof(char*));
+  screen_listSize = n;
   LcdClearScreen();
   PixelAddressType loc;
   loc.u16PixelColumnAddress = 0;
@@ -64,7 +61,9 @@ void ScreenUpdateAlert (char** info, int n){
   for (i = 0; i < n;i++){
     LcdLoadString(info[i], LCD_FONT_SMALL, &loc);
     loc.u16PixelRowAddress += 10;
-    missingNames[i] = (char*)malloc(sizeof(char)*(1 + strlen(info[i])));
     strcpy(missingNames[i], info[i]);
+  }
+  if (n == 0){
+    LcdLoadString ("Everything is fine", LCD_FONT_SMALL, &loc);
   }
 }

@@ -74,6 +74,7 @@ void main(void)
   ConnectInitialize();
   UserApp2Initialize();
   UserApp3Initialize();
+  Screen_Initialize();
   
   /* Exit initialization */
   SystemStatusReport();
